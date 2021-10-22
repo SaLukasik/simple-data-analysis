@@ -1,0 +1,141 @@
+#dane z fotodiody zawierają xxxx analizy danych oraz potem kilka h? szumu
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.odr import *
+#1) narysować dane
+#2) wyznaczyć, gdzie zaczyna się szum
+#3) policzyć odchylenia standardowe danych i szumu
+#4) narysować wykres dla smaych danych
+#5) narysować kilka różnych wyresów z uśrednieniem
+#6) spróbować dopasować krzywą
+A = np.loadtxt("danezfotodiody.txt")
+print(len(A))
+B = list(range(1, len(A) +1))
+print(B)
+'''def wykreszuśrednieniem(ile):
+    print(ile)
+    i = 0
+    for x in range(len(ile)):
+        plt.figure(x)
+        n = ile[x]
+        nowadlugosc =int (len(A)/n)
+        B2 = list(range(1, nowadlugosc +1))
+        A2 = B2
+        for y in range (len(A2)):
+            s = 0.000000000000
+            for z in range(n):
+                s+= A[z+y*n]
+            s = s/n
+            A2[y] = s
+        B2 = list(range(1, nowadlugosc +1))
+        plt.scatter(B2,A2,  alpha=0.5, marker=".")
+        plt.savefig(f'uśredniono{n}kilkah.jpg')
+        plt.figure(9999999-x)
+        plt.plot(B2,A2)
+        plt.savefig(f'uśredniono{n}krzywakilkah.jpg')
+        plt.close(9999999-x)
+        plt.close(x)
+wykreszuśrednieniem((2,5,10,20,30,50,100,500,700,1000,10000))'''
+print("ok")
+#pomiary do 9/20 pomiarów, szum od 11/20 pomiarów
+
+point = int(len(A) * (9/20))
+Apomiary = np.split(A, [point])[0]
+Aszum = np.split(A, [point])[1]
+Bpomiary = np.split(B, [point])[0]
+Bszum = list(range(1, len((Aszum))+1))
+
+
+Bszum = Bszum[20000:]
+Aszum = Aszum[20000:]
+iletrzeba = len(Apomiary) - len(Aszum)
+Dododania = Bszum[0:(iletrzeba)]
+arr = np.concatenate((Aszum, Dododania))
+Bszum = list(range(1, len((Aszum))+1))
+times = len(Apomiary)/10
+timemin = times/60
+timeh= timemin/60
+plt.figure(99999999)
+plt.plot(Bpomiary,Apomiary)
+plt.text(0.004e+04,0.008, "odchylenie standardowe dla s.świetlnego: ok.  0.00381772")
+plt.text(0.004e+04,0.0045, "odchylenie standardowe dla szumu: ok.  0.00003082")
+plt.text(0.004e+04,0.012, f"w sekundach:{times}, w minutach: {timemin}, w godzinach:{round(timeh,3) }")
+plt.figure(99999999)
+#plt.plot(Bszum,Aszum)
+plt.show()
+print(Apomiary.std())
+print(Aszum.std())
+
+plt.savefig("generalne2.jpg")
+
+'''def wykreszuśrednieniem(ile):
+    print(ile)
+    i = 0
+    for x in range(len(ile)):
+        plt.figure(x)
+        n = ile[x]
+        nowadlugosc =int (len(Apomiary)/n)
+        B2 = list(range(1, nowadlugosc +1))
+        A2 = B2
+        for y in range (len(A2)):
+            s = 0.000000000000
+            for z in range(n):
+                s+= Apomiary[z+y*n]
+            s = s/n
+            A2[y] = s
+        nowadlugosc2 =int (len(Aszum)/n)
+        B22 = list(range(1, nowadlugosc2 +1))
+        A22 = B22
+        for y in range (len(A22)):
+            s = 0.000000000000
+            for z in range(n):
+                s+= Aszum[z+y*n]
+            s = s/n
+            A22[y] = s
+        B2 = list(range(1, nowadlugosc +1))
+        B22 = list(range(1, nowadlugosc2 +1))
+        plt.scatter(B2,A2,  alpha=0.5, marker=".")
+        plt.scatter(B22,A22,  alpha=0.5, marker=".")
+        plt.savefig(f'uśredniono{n}kilkah.jpg')
+        plt.figure(9999999-x)
+        plt.plot(B2,A2)
+        plt.plot(B22,A22)
+        plt.savefig(f'uśredniono{n}krzywakilkah.jpg')
+        plt.close(9999999-x)
+        plt.close(x)
+wykreszuśrednieniem((2,5,10,20,30,50,100,500,700,1000,10000))'''
+print("OKI")
+#teraz policzyć odchylenie standardowe dla obu
+
+#dodać cały czas pomiarów do generala
+#dodać wykresy krzywej dla 30 min, ale wyciętych z no tak jakoś środka
+#dodać wykresy z godziny ale tak jakoś wyciętej z środka
+#dodac wykresy z dwóch godzin ale tak jakoś wyciętych ze środka
+'''Apom30min = Apomiary[20000:56000]
+Bpom30min = list(range(1, len((Apom30min))+1))
+
+def wykreszuśrednieniem(ile):
+    print(ile)
+    i = 0
+    for x in range(len(ile)):
+        plt.figure(x)
+        n = ile[x]
+        nowadlugosc =int (len(Apomiary)/n)
+        B2 = list(range(1, nowadlugosc +1))
+        A2 = B2
+        for y in range (len(A2)):
+            s = 0.000000000000
+            for z in range(n):
+                s+= Apomiary[z+y*n]
+            s = s/n
+            A2[y] = s
+        B2 = list(range(1, nowadlugosc +1))
+        plt.scatter(B2,A2,  alpha=0.5, marker=".")
+        plt.savefig(f'uśredniono{n}_beszumupunktowo.jpg')
+        plt.figure(9999999-x)
+        plt.plot(B2,A2)
+        plt.savefig(f'uśredniono{n}_bezszumuliniowo.jpg')
+        plt.close(9999999-x)
+        plt.close(x)
+wykreszuśrednieniem((2,5,10,20,30,50,100,500,700,1000,10000))
+print(("okokok"))'''
